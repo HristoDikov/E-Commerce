@@ -1,4 +1,5 @@
-﻿using E_Commerce.InputModels;
+﻿using E_Commerce.Dtos;
+using E_Commerce.InputModels;
 using E_Commerce.Services.Contracts;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,12 +15,21 @@ namespace E_Commerce.Controllers
         {
             this.productService = productService;
         }
+
         [HttpPost]
         public ActionResult Create(ProductCreationalModel product)
         {
             this.productService.Create(product);
 
             return this.Created($"/api/product/{product.Name}", product.Name);
+        }
+
+        [HttpGet("{id}")]
+        public ActionResult<ProductDto> GetProductById(int id)
+        {
+            var a =  this.productService.GetProductById(id);
+
+            return a;
         }
     }
 }
