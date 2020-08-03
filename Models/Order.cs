@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using E_Commerce.Enums;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace E_Commerce.Models
 {
@@ -15,7 +17,19 @@ namespace E_Commerce.Models
 
         public decimal TotalPrice { get; set; }
 
-        public string Status { get; set; }
+        public virtual int StatusId
+        {
+            get
+            {
+                return (int)this.Status;
+            }
+            set
+            {
+                Status = (Status)value;
+            }
+        }
+        [EnumDataType(typeof(Status))]
+        public Status Status { get; set; }
 
         public DateTime CreatedAt { get; set; }
 
@@ -23,6 +37,6 @@ namespace E_Commerce.Models
 
         public string ApplicationUserId { get; set; }
 
-        public virtual IEnumerable<Product> Products { get; set; }
+        public virtual HashSet<Product> Products { get; set; }
     }
 }

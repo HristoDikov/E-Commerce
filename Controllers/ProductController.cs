@@ -1,7 +1,9 @@
 ﻿using E_Commerce.Dtos;
 using E_Commerce.InputModels;
 using E_Commerce.Services.Contracts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 
 namespace E_Commerce.Controllers
 {
@@ -30,6 +32,20 @@ namespace E_Commerce.Controllers
             var a =  this.productService.GetProductById(id);
 
             return a;
+        }
+
+        [HttpGet]
+        public IEnumerable<ProductDto> GetProducts() 
+        {
+            return this.productService.GetProducts();
+        }
+
+        [HttpDelete("{Id}")]
+        public IActionResult Delete(int id)
+        {
+            string msg = this.productService.DeleteProduct(id);
+
+            return BadRequest(msg);
         }
     }
 }

@@ -28,10 +28,12 @@ namespace E_Commerce.Controllers
         [Route("Login")]
         public ActionResult Login(UserLoginModel userLoginModel)
         {
-            this.userService.Login(userLoginModel);
+           this.userService.Login(userLoginModel);
+
             var loggedType = this.User.Identity.AuthenticationType;
             var logged = this.User.Identity.IsAuthenticated;
             var smth = this.User.Identity.Name;
+
             return this.Accepted();
         }
     }

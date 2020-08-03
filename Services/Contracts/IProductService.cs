@@ -1,12 +1,17 @@
 ﻿using E_Commerce.Dtos;
 using E_Commerce.InputModels;
+using System.Collections.Generic;
 
 namespace E_Commerce.Services.Contracts
 {
     public interface IProductService
     {
-        public void Create(ProductCreationalModel productCreationalModel);
+         void Create(ProductCreationalModel productCreationalModel);
 
-        public ProductDto GetProductById(int Id);
+         ProductDto GetProductById(int Id);
+
+        IEnumerable<ProductDto> GetProducts();
+
+        public string DeleteProduct(int id);
     }
 }

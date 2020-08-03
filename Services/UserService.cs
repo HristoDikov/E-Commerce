@@ -25,7 +25,7 @@ namespace E_Commerce.Services
 
         public void Login(UserLoginModel userLoginModel)
         {
-            var aa = signInManager.PasswordSignInAsync(userLoginModel.Username, userLoginModel.Password, true, false);
+             signInManager.PasswordSignInAsync(userLoginModel.Username, userLoginModel.Password, true, false);
         }
 
         public void Register(UserRegistrationModel registerUser)
@@ -38,7 +38,6 @@ namespace E_Commerce.Services
             };
 
             userManager.CreateAsync(ApplicationUser, registerUser.Password);
-
             db.Users.Add(ApplicationUser);
             db.SaveChanges();
         }
