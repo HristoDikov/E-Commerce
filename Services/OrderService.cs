@@ -88,6 +88,11 @@ namespace E_Commerce.Services
 
             var exchangeRate = this.currencyService.GetCurrency(userCurrency);
 
+            if (exchangeRate == 0)
+            {
+                return null;
+            }
+
             order.TotalPrice *= exchangeRate;
 
             this.db.Orders.Add(order);
