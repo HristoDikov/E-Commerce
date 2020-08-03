@@ -29,9 +29,14 @@ namespace E_Commerce.Controllers
         [HttpGet("{id}")]
         public ActionResult<ProductDto> GetProductById(int id)
         {
-            var a =  this.productService.GetProductById(id);
+            ProductDto product = this.productService.GetProductById(id);
 
-            return a;
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(product);
         }
 
         [HttpGet]
@@ -45,7 +50,11 @@ namespace E_Commerce.Controllers
         {
             string msg = this.productService.DeleteProduct(id);
 
-            return BadRequest(msg);
+            if (msg == null)
+            {
+                return BadRequest("No such product.");
+            }
+            return Ok(msg);
         }
     }
 }

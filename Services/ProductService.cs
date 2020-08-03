@@ -36,7 +36,7 @@ namespace E_Commerce.Services
 
         public ProductDto GetProductById(int id)
         {
-            return this.db.Products
+            ProductDto pDto = this.db.Products
                 .Select(p => new ProductDto
                 {
                     Id = p.Id,
@@ -45,6 +45,13 @@ namespace E_Commerce.Services
                     Image = p.Image,
                 })
                 .FirstOrDefault(p => p.Id == id);
+
+            if (pDto == null)
+            {
+                return null;
+            }
+
+            return pDto;
         }
 
         public IEnumerable<ProductDto> GetProducts() 
@@ -61,13 +68,14 @@ namespace E_Commerce.Services
 
         public string DeleteProduct(int id) 
         {
-            var product = this.db.Products.FirstOrDefault(p => p.Id == id);
+            Product product = this.db.Products.FirstOrDefault(p => p.Id == id);
 
             if (product == null)
             {
-                return "No such product!";
+                return null;
             }
-            var productToBeDeleted = new Product { Id = id };
+
+            Product productToBeDeleted = new Product { Id = id };
 
             this.db.Remove(product);
             db.SaveChanges();
