@@ -8,6 +8,9 @@ namespace E_Commerce.Dtos
 {
     public class OrderDto
     {
+        [DisplayName("Order id")]
+        public int Id { get; set; }
+
         [DisplayName("Order total price")]
         public decimal OrderPrice { get; set; }
 

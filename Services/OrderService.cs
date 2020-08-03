@@ -26,33 +26,26 @@ namespace E_Commerce.Services
         {
             var order = this.db.Orders.FirstOrDefault(o => o.Id == id);
 
-            switch (status.ToLower())
+            if (order == null)
             {
-                case "new":
-                    order.Status = Status.New;
-                    break;
-                case "payment":
-                    order.Status = Status.Payment;
-                    break;
-                case "delivery":
-                    order.Status = Status.Delivery;
-                    break;
-                case "cancelled":
-                    order.Status = Status.Cancelled;
-                    break;
-                case "completed":
-                    order.Status = Status.Completed;
-                        break;
-                default:
-                    order.Status = Status.New;
-                    break;
+                return null;
             }
+
+            order.Status = (status.ToLower()) switch
+            {
+                "new" => Status.New,
+                "payment" => Status.Payment,
+                "delivery" => Status.Delivery,
+                "cancelled" => Status.Cancelled,
+                "completed" => Status.Completed,
+                _ => Status.New,
+            };
 
             this.db.SaveChanges();
             return $"The status was changed to {status}.";
         }
 
-        public Order Create(List<int> ids, string username)
+        public OrderDto Create(List<int> ids, string username)
         {
             List<Product> products = new List<Product>();
             var user = (ApplicationUser)this.db.Users.FirstOrDefault(u => u.UserName == username);
@@ -74,7 +67,11 @@ namespace E_Commerce.Services
                 {
                     products.Add(product);
                 }
+            }
 
+            if (products.Count < 1)
+            {
+                return null;
             }
 
             Order order = new Order()
@@ -104,17 +101,27 @@ namespace E_Commerce.Services
             this.db.Products.UpdateRange(products);
             this.db.SaveChanges();
 
-            return order;
+            OrderDto orderDtos = new OrderDto
+            {
+                Id = order.Id,
+                OrderPrice = order.TotalPrice * exchangeRate,
+                Status = order.Status.ToString(),
+                CreatedAt = order.CreatedAt.ToString(),
+                Products = order.Products.Select(p => new ProductDto
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    Price = p.Price.ToString(),
+                    Image = p.Image,
+                }).ToList(),
+            };
+
+            return orderDtos;
         }
 
         public List<OrderDto> UserOrders(string username)
         {
             var user = (ApplicationUser)this.db.Users.FirstOrDefault(u => u.UserName == username);
-
-            if (user == null)
-            {
-                return new List<OrderDto>();
-            }
 
             var exchangeRate = this.currencyService.GetCurrency(user.CurrencyCode);
 
@@ -132,6 +139,7 @@ namespace E_Commerce.Services
                         Price = (p.Price * exchangeRate).ToString(),
                     })
                 .ToList(),
+
                 })
                 .ToList();
         }

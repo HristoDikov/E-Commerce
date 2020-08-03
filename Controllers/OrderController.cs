@@ -18,13 +18,17 @@ namespace E_Commerce.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create(List<int> ids)
+        public ActionResult<OrderDto> Create(List<int> ids)
         {
             string username = this.User.Identity.Name;
-            Order order = this.orderService.Create(ids, username);
+            OrderDto order = this.orderService.Create(ids, username);
 
-            //TODO DTO
-            return Ok(order);
+            if (order == null)
+            {
+                return NotFound();
+            }
+
+            return CreatedAtAction("Create", order);
         }
 
         [HttpGet]
@@ -38,12 +42,17 @@ namespace E_Commerce.Controllers
             return Ok(orders);
         }
 
-        [HttpPut()]
+        [HttpPut]
         public ActionResult<ProductDto> ChangeOrderStatus(int id, string status)
         {
-            var orders = orderService.ChangeOrderStatus(id, status);
+            var message = orderService.ChangeOrderStatus(id, status);
 
-            return Ok(orders);
+            if (message == null)
+            {
+                return NotFound("Order does not exist!");
+            }
+
+            return Ok(message);
         }
     }
 }
