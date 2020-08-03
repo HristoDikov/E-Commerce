@@ -8,5 +8,7 @@ namespace E_Commerce.Services.Contracts
         void Register(UserRegistrationModel registerUser);
 
         void Login(UserLoginModel userLoginModel);
+
+        void Logout();
     }
 }

@@ -12,15 +12,13 @@ namespace E_Commerce.Services
         private readonly ApplicationDbContext db;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly SignInManager<ApplicationUser> signInManager;
-        private readonly RoleManager<IdentityRole> roleManager;
 
         public UserService(ApplicationDbContext db, UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager, RoleManager<IdentityRole> roleManager)
+            SignInManager<ApplicationUser> signInManager)
         {
             this.db = db;
             this.userManager = userManager;
             this.signInManager = signInManager;
-            this.roleManager = roleManager;
         }
 
         public void Login(UserLoginModel userLoginModel)
@@ -40,6 +38,11 @@ namespace E_Commerce.Services
             userManager.CreateAsync(ApplicationUser, registerUser.Password);
             db.Users.Add(ApplicationUser);
             db.SaveChanges();
+        }
+
+        public void Logout()
+        {
+            this.signInManager.SignOutAsync();
         }
 
     }

@@ -1,6 +1,8 @@
 ﻿using E_Commerce.InputModels;
 using E_Commerce.Services.Contracts;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Routing;
+using RestSharp;
 
 namespace E_Commerce.Controllers
 {
@@ -30,9 +32,13 @@ namespace E_Commerce.Controllers
         {
            this.userService.Login(userLoginModel);
 
-            var loggedType = this.User.Identity.AuthenticationType;
-            var logged = this.User.Identity.IsAuthenticated;
-            var smth = this.User.Identity.Name;
+            return this.Accepted();
+        }
+
+        [HttpGet]
+        public IActionResult Logout() 
+        {
+            this.userService.Logout();
 
             return this.Accepted();
         }
