@@ -9,14 +9,21 @@ namespace E_Commerce.Data
     {
         public ApplicationDbContext(DbContextOptions options) : base(options)
         {
+
         }
 
         public ApplicationDbContext()
         {
         }
 
-        public virtual DbSet<Order> Orders{ get; set; }
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+            builder.Seed();
+        }
 
-        public virtual DbSet<Product> Products{ get; set; }
+        public virtual DbSet<Order> Orders { get; set; }
+
+        public virtual DbSet<Product> Products { get; set; }
     }
 }
