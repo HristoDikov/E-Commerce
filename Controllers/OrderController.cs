@@ -1,8 +1,10 @@
 ﻿using E_Commerce.Dtos;
 using E_Commerce.Models;
 using E_Commerce.Services.Contracts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace E_Commerce.Controllers
 {
@@ -18,9 +20,11 @@ namespace E_Commerce.Controllers
         }
 
         [HttpPost]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         public ActionResult<OrderDto> Create(List<int> ids)
         {
             string username = this.User.Identity.Name;
+            username = this.User.Claims.First().Value;
             OrderDto order = this.orderService.Create(ids, username);
 
             if (order == null)
@@ -33,16 +37,23 @@ namespace E_Commerce.Controllers
 
         [HttpGet]
         [Route("GetUserOrders")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         public ActionResult<ProductDto> GetUserOrders() 
         {
-            string username = this.User.Identity.Name;
+            string username = this.User.Claims.First().Value;
 
             var orders = orderService.UserOrders(username);
+
+            if (orders == null)
+            {
+                return NotFound();
+            }
 
             return Ok(orders);
         }
 
         [HttpPut]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         public ActionResult<ProductDto> ChangeOrderStatus(int id, string status)
         {
             var message = orderService.ChangeOrderStatus(id, status);

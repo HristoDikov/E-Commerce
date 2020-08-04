@@ -63,7 +63,7 @@ namespace E_Commerce.Services
                 })
                     .FirstOrDefault(p => p.Id == id);
 
-                if (product != null)
+                if (product != null || product.OrderId == 0)
                 {
                     products.Add(product);
                 }
@@ -73,6 +73,8 @@ namespace E_Commerce.Services
             {
                 return null;
             }
+
+            
 
             Order order = new Order()
             {
@@ -128,11 +130,16 @@ namespace E_Commerce.Services
         {
             var user = (ApplicationUser)this.db.Users.FirstOrDefault(u => u.UserName == username);
 
+            if (user == null)
+            {
+                return null;
+            }
+
             var exchangeRate = this.currencyService.GetCurrency(user.CurrencyCode);
 
             return this.db.Orders.Where(o => o.ApplicationUser.UserName == username)
                 .Select(o => new OrderDto
-                {
+                {Id = o.Id,
                     OrderPrice = o.TotalPrice,
                     Status = o.Status.ToString(),
                     CreatedAt = o.CreatedAt.ToString(),

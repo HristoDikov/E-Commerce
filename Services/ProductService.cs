@@ -21,7 +21,7 @@ namespace E_Commerce.Services
             this.db = db;
         }
 
-        public void Create(ProductCreationalModel productInput)
+        public string Create(ProductCreationalModel productInput)
         {
             var product = new Product
             {
@@ -32,6 +32,16 @@ namespace E_Commerce.Services
 
             this.db.Products.Add(product);
             this.db.SaveChanges();
+
+            var productDto = new ProductDto
+            {
+                Id = product.Id,
+                Name = product.Name,
+                Price = product.Price.ToString(),
+                Image = product.Image
+            };
+
+            return $"Product {product.Name} with Id: {product.Id} was succesfully created!";
         }
 
         public ProductDto GetProductById(int id)

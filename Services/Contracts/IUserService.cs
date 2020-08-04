@@ -5,9 +5,9 @@ namespace E_Commerce.Services.Contracts
 {
     public interface IUserService
     {
-        void Register(UserRegistrationModel registerUser);
+        string Register(UserRegistrationModel registerUser);
 
-        void Login(UserLoginModel userLoginModel);
+        string Login(UserLoginModel userLoginModel);
 
         void Logout();
     }

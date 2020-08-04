@@ -1,7 +1,4 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-
-namespace E_Commerce.Dtos
+﻿namespace E_Commerce.Dtos
 {
     public class ProductDto
     {

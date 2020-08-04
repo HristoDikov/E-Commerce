@@ -1,8 +1,9 @@
 ﻿using E_Commerce.InputModels;
 using E_Commerce.Services.Contracts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Routing;
-using RestSharp;
+using System.Collections;
+using System.Security.Claims;
 
 namespace E_Commerce.Controllers
 {
@@ -17,22 +18,28 @@ namespace E_Commerce.Controllers
             this.userService = userService;
         }
 
+     
+
         [HttpPost]
         [Route("Register")]
         public ActionResult Register(UserRegistrationModel registerUser)
         {
-            this.userService.Register(registerUser);
+            string msg = this.userService.Register(registerUser);
 
-            return this.Created($"/api/user/{registerUser.Username}", registerUser.Username);
+            return this.Created($"/api/user/{registerUser.Username}", msg);
         }
 
         [HttpPost]
         [Route("Login")]
-        public ActionResult Login(UserLoginModel userLoginModel)
+        public ActionResult<string> Login(UserLoginModel userLoginModel)
         {
-           this.userService.Login(userLoginModel);
+           string token = this.userService.Login(userLoginModel);
 
-            return this.Accepted();
+            var user = this.User.Identity;
+            var smthElse = this.User;
+            var st = this.User.Claims;
+            var currentUser = this.User.Identity.Name;
+            return this.Ok(token);
         }
 
         [HttpGet]
@@ -42,5 +49,6 @@ namespace E_Commerce.Controllers
 
             return this.Accepted();
         }
+
     }
 }

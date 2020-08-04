@@ -6,7 +6,7 @@ namespace E_Commerce.Services.Contracts
 {
     public interface IProductService
     {
-         void Create(ProductCreationalModel productCreationalModel);
+         string Create(ProductCreationalModel productCreationalModel);
 
          ProductDto GetProductById(int Id);
 

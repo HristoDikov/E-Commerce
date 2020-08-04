@@ -1,5 +1,6 @@
 ﻿using E_Commerce.Dtos;
 using E_Commerce.InputModels;
+using E_Commerce.Models;
 using E_Commerce.Services.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -19,14 +20,16 @@ namespace E_Commerce.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create(ProductCreationalModel product)
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public ActionResult<ProductDto> Create(ProductCreationalModel product)
         {
-            this.productService.Create(product);
+            var msg = this.productService.Create(product);
 
-            return this.Created($"/api/product/{product.Name}", product.Name);
+            return this.Created($"/api/product/{product.Name}", msg);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet]
+        [Route("GetProductById")]
         public ActionResult<ProductDto> GetProductById(int id)
         {
             ProductDto product = this.productService.GetProductById(id);
@@ -45,9 +48,11 @@ namespace E_Commerce.Controllers
             return this.productService.GetProducts();
         }
 
-        [HttpDelete("{Id}")]
+        [HttpDelete]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         public IActionResult Delete(int id)
         {
+            var user = this.User.Identity.Name;
             string msg = this.productService.DeleteProduct(id);
 
             if (msg == null)
