@@ -3,12 +3,8 @@ using E_Commerce.Dtos;
 using E_Commerce.InputModels;
 using E_Commerce.Models;
 using E_Commerce.Services.Contracts;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace E_Commerce.Services
 {

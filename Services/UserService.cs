@@ -45,8 +45,8 @@ namespace E_Commerce.Services
             };
 
             userManager.CreateAsync(ApplicationUser, registerUser.Password);
-            db.Users.Add(ApplicationUser);
-            db.SaveChanges();
+            this.db.Users.Add(ApplicationUser);
+            this.db.SaveChanges();
 
             return $"User with username {registerUser.Username} was registered.";
         }

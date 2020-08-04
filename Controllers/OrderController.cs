@@ -23,8 +23,8 @@ namespace E_Commerce.Controllers
         [Authorize(AuthenticationSchemes = "Bearer")]
         public ActionResult<OrderDto> Create(List<int> ids)
         {
-            string username = this.User.Identity.Name;
-            username = this.User.Claims.First().Value;
+            string username = this.User.Claims.First().Value;
+
             OrderDto order = this.orderService.Create(ids, username);
 
             if (order == null)

@@ -2,7 +2,6 @@ using E_Commerce.Data;
 using E_Commerce.Models;
 using E_Commerce.Services;
 using E_Commerce.Services.Contracts;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -12,7 +11,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
-using RestSharp.Authenticators;
 using System.Text;
 
 namespace E_Commerce
@@ -23,6 +21,7 @@ namespace E_Commerce
         {
             Configuration = configuration;
         }
+
 
         public IConfiguration Configuration { get; }
 
@@ -99,7 +98,6 @@ namespace E_Commerce
 
                 endpoints.MapControllers();
             });
-
         }
     }
 }
