@@ -22,16 +22,16 @@ namespace E_Commerce.Services
 
         public string GenerateSecurityToken(string name)
         {
-            var securityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(config["Jwt:Key"]));
-            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+            SymmetricSecurityKey securityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(config["Jwt:Key"]));
+            SigningCredentials credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-            var claims = new[]
+            Claim[] claims = new[]
             {
                 new Claim(JwtRegisteredClaimNames.Sub, name),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
 
-            var token = new JwtSecurityToken(
+            JwtSecurityToken token = new JwtSecurityToken(
                 issuer: config["Jwt:Issuer"],
                 audience: config["Jwt:Issuer"],
                 claims,
@@ -39,7 +39,8 @@ namespace E_Commerce.Services
                 signingCredentials: credentials
                 );
 
-            var encodedToken = new JwtSecurityTokenHandler().WriteToken(token);
+            string encodedToken = new JwtSecurityTokenHandler().WriteToken(token);
+
             return encodedToken;
 
         }

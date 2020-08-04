@@ -9,7 +9,6 @@ namespace E_Commerce.Data
     {
         public ApplicationDbContext(DbContextOptions options) : base(options)
         {
-
         }
 
         public ApplicationDbContext()
@@ -19,6 +18,8 @@ namespace E_Commerce.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+
+            //Seeding Products
             builder.Seed();
         }
 

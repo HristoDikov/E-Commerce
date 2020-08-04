@@ -11,13 +11,13 @@ namespace E_Commerce.Services
     {
         public decimal GetCurrency(string currency) 
         {
-            var client = new RestClient($" https://api.exchangeratesapi.io/latest?base=BGN&symbols={currency}");
-            var request = new RestRequest(Method.GET);
+            RestClient client = new RestClient($" https://api.exchangeratesapi.io/latest?base=BGN&symbols={currency}");
+            RestRequest request = new RestRequest(Method.GET);
             IRestResponse response = client.Execute(request);
 
             if (response.IsSuccessful)
             {
-                var content = JsonConvert.DeserializeObject<Rates>(response.Content);
+                Rates content = JsonConvert.DeserializeObject<Rates>(response.Content);
 
                 return content.Currency[currency];
             }

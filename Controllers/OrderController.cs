@@ -38,11 +38,11 @@ namespace E_Commerce.Controllers
         [HttpGet]
         [Route("GetUserOrders")]
         [Authorize(AuthenticationSchemes = "Bearer")]
-        public ActionResult<ProductDto> GetUserOrders() 
+        public ActionResult<OrderDto> GetUserOrders() 
         {
             string username = this.User.Claims.First().Value;
 
-            var orders = orderService.UserOrders(username);
+            List<OrderDto> orders = orderService.UserOrders(username);
 
             if (orders == null)
             {
@@ -54,9 +54,9 @@ namespace E_Commerce.Controllers
 
         [HttpPut]
         [Authorize(AuthenticationSchemes = "Bearer")]
-        public ActionResult<ProductDto> ChangeOrderStatus(int id, string status)
+        public ActionResult<string> ChangeOrderStatus(int id, string status)
         {
-            var message = orderService.ChangeOrderStatus(id, status);
+            string message = orderService.ChangeOrderStatus(id, status);
 
             if (message == null)
             {

@@ -26,8 +26,9 @@ namespace E_Commerce.Services
 
         public string Login(UserLoginModel userLoginModel)
         {
-            var rsult = signInManager.PasswordSignInAsync(userLoginModel.Username, userLoginModel.Password, true, false).Result;
-            if (rsult.Succeeded)
+            SignInResult result = signInManager.PasswordSignInAsync(userLoginModel.Username, userLoginModel.Password, true, false).Result;
+
+            if (result.Succeeded)
             {
                 return jwtService.GenerateSecurityToken(userLoginModel.Username);
             }
@@ -37,14 +38,14 @@ namespace E_Commerce.Services
 
         public string Register(UserRegistrationModel registerUser)
         {
-
-            var ApplicationUser = new ApplicationUser()
+            ApplicationUser ApplicationUser = new ApplicationUser()
             {
                 UserName = registerUser.Username,
                 CurrencyCode = registerUser.CurrencyCode,
             };
 
             userManager.CreateAsync(ApplicationUser, registerUser.Password);
+
             this.db.Users.Add(ApplicationUser);
             this.db.SaveChanges();
 

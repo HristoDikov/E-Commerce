@@ -24,7 +24,7 @@ namespace E_Commerce.Services
 
         public string ChangeOrderStatus(int id, string status)
         {
-            var order = this.db.Orders.FirstOrDefault(o => o.Id == id);
+            Order order = this.db.Orders.FirstOrDefault(o => o.Id == id);
 
             if (order == null)
             {
@@ -48,13 +48,13 @@ namespace E_Commerce.Services
         public OrderDto Create(List<int> ids, string username)
         {
             List<Product> products = new List<Product>();
-            var user = (ApplicationUser)this.db.Users.FirstOrDefault(u => u.UserName == username);
+            ApplicationUser user = (ApplicationUser)this.db.Users.FirstOrDefault(u => u.UserName == username);
 
-            var userCurrency = user.CurrencyCode;
+            string userCurrency = user.CurrencyCode;
 
             foreach (var id in ids)
             {
-                var product = this.db.Products.Select(p => new Product
+                Product product = this.db.Products.Select(p => new Product
                 {
                     Id = p.Id,
                     Name = p.Name,
@@ -74,8 +74,6 @@ namespace E_Commerce.Services
                 return null;
             }
 
-            
-
             Order order = new Order()
             {
                 ApplicationUserId = user.Id,
@@ -88,7 +86,7 @@ namespace E_Commerce.Services
                 order.TotalPrice += product.Price;
             }
 
-            var exchangeRate = this.currencyService.GetCurrency(userCurrency);
+            decimal exchangeRate = this.currencyService.GetCurrency(userCurrency);
 
             if (exchangeRate == 0)
             {
@@ -128,14 +126,14 @@ namespace E_Commerce.Services
 
         public List<OrderDto> UserOrders(string username)
         {
-            var user = (ApplicationUser)this.db.Users.FirstOrDefault(u => u.UserName == username);
+            ApplicationUser user = (ApplicationUser)this.db.Users.FirstOrDefault(u => u.UserName == username);
 
             if (user == null)
             {
                 return null;
             }
 
-            var exchangeRate = this.currencyService.GetCurrency(user.CurrencyCode);
+            decimal exchangeRate = this.currencyService.GetCurrency(user.CurrencyCode);
 
             return this.db.Orders.Where(o => o.ApplicationUser.UserName == username)
                 .Select(o => new OrderDto

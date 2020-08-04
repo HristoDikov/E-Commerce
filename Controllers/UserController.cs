@@ -18,8 +18,6 @@ namespace E_Commerce.Controllers
             this.userService = userService;
         }
 
-     
-
         [HttpPost]
         [Route("Register")]
         public ActionResult Register(UserRegistrationModel registerUser)
@@ -35,10 +33,6 @@ namespace E_Commerce.Controllers
         {
            string token = this.userService.Login(userLoginModel);
 
-            var user = this.User.Identity;
-            var smthElse = this.User;
-            var st = this.User.Claims;
-            var currentUser = this.User.Identity.Name;
             return this.Ok(token);
         }
 

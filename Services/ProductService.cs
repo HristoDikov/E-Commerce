@@ -19,7 +19,7 @@ namespace E_Commerce.Services
 
         public string Create(ProductCreationalModel productInput)
         {
-            var product = new Product
+            Product product = new Product
             {
                 Name = productInput.Name,
                 Price = productInput.Price,
@@ -29,7 +29,7 @@ namespace E_Commerce.Services
             this.db.Products.Add(product);
             this.db.SaveChanges();
 
-            var productDto = new ProductDto
+            ProductDto productDto = new ProductDto
             {
                 Id = product.Id,
                 Name = product.Name,

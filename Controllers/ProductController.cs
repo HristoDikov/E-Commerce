@@ -21,9 +21,9 @@ namespace E_Commerce.Controllers
 
         [HttpPost]
         [Authorize(AuthenticationSchemes = "Bearer")]
-        public ActionResult<ProductDto> Create(ProductCreationalModel product)
+        public ActionResult<string> Create(ProductCreationalModel product)
         {
-            var msg = this.productService.Create(product);
+            string msg = this.productService.Create(product);
 
             return this.Created($"/api/product/{product.Name}", msg);
         }
@@ -52,7 +52,6 @@ namespace E_Commerce.Controllers
         [Authorize(AuthenticationSchemes = "Bearer")]
         public IActionResult Delete(int id)
         {
-            var user = this.User.Identity.Name;
             string msg = this.productService.DeleteProduct(id);
 
             if (msg == null)
